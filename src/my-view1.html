@@ -60,8 +60,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // Get data from 
           this.$.app.app.database().ref('/').on('value', function(data) {
               that.en = data.val().en;
+              that.fr = data.val().fr;
+              //that.zh = data.val().zh;
               that.keys = Object.keys(that.en);
+              console.log(that.en);
           });
+
+          this.shadowRoot.querySelector('paper-autocomplete-suggestions').addEventListener('selected-option-changed', this.onHighlightedSuggestedChange.bind(this));
+      }
+
+      onHighlightedSuggestedChange(evt) {
+        console.log(this.en[evt.detail.value.text]);
+        console.log(this.fr[evt.detail.value.text]);
+        //console.log(this.zh[evt.detail.value.text]);
       }
 
       filter() {
