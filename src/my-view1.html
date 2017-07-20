@@ -11,6 +11,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="../bower_components/paper-autocomplete/paper-autocomplete.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-view1">
@@ -30,7 +31,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <div class="card">
-      <paper-input id="nameInput" label="username" on-input="filter" value="{{term}}"></paper-input>
+      <paper-input id="nameInput" label="username"></paper-input>
+      <paper-autocomplete-suggestions min-length="0" is-open="true" for="nameInput" source="[[keys]]"></paper-autocomplete-suggestions>
       <template is="dom-repeat" items="{{keys}}">
         <div>{{item}}</div>
       </template> 
@@ -41,7 +43,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         auth-domain="{{config.authDomain}}"
         database-url="{{config.databaseURL}}"
         storage-bucket="{{config.storageBucket}}"
-        messaging-sender-id="{{config.messagingSenderId}}"></firebase-app>
+        messaging-sender-id="{{config.messagingSenderId}}"></firebase-app> 
   </template>
 
   <script>
