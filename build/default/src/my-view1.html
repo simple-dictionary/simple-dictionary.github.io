@@ -1,0 +1,89 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+--><link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-view1">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      #output {
+        width: 100%;
+        height: auto;
+        background-color: #000;
+      }
+    </style>
+
+    <div class="card">
+      <paper-input id="nameInput" label="username" on-input="filter" value="{{term}}"></paper-input>
+      <template is="dom-repeat" items="{{keys}}">
+        <div>{{item}}</div>
+      </template> 
+    </div>
+    <firebase-app id="app" api-key="{{config.apiKey}}" auth-domain="{{config.authDomain}}" database-url="{{config.databaseURL}}" storage-bucket="{{config.storageBucket}}" messaging-sender-id="{{config.messagingSenderId}}"></firebase-app>
+  </template>
+
+  <script>
+    class MyView1 extends Polymer.Element {
+      static get is() { return 'my-view1'; }
+
+      connectedCallback() {
+          super.connectedCallback();
+
+          var that = this;
+
+          window.app = this.$.app.app.database();
+
+          // Get data from 
+          this.$.app.app.database().ref('/').on('value', function(data) {
+              that.en = data.val().en;
+              that.keys = Object.keys(that.en);
+          });
+      }
+
+      filter() {
+        console.log(`filtering with term: ${term}`);
+      }
+
+      static get properties() {
+        return {
+          name: {
+            type: String,
+            reflectToAttribute: false,
+            notify: true
+          },
+          term: {
+            type: String,
+            reflectToAttribute: true,
+            notify: true,
+          },
+          config: {
+              type: Object,
+              notify: true,
+              value: {
+                  "apiKey": "AIzaSyB4GFCB9jZfwSpGz7wLJfveXm893HhuZM8",
+                  "authDomain": "dictionary-187c9.firebaseapp.com",
+                  "databaseURL": "https://dictionary-187c9.firebaseio.com",
+                  "storageBucket": "dictionary-187c9.appspot.com",
+              }
+          }
+        }
+      }
+    }
+
+    window.customElements.define(MyView1.is, MyView1);
+  </script>
+</dom-module>
