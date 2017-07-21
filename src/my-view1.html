@@ -31,8 +31,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <div class="card">
-      <paper-input id="nameInput" label="username"></paper-input>
+      <paper-input id="nameInput" label="Search Keywords"></paper-input>
       <paper-autocomplete-suggestions min-length="0" is-open="true" for="nameInput" source="[[keys]]"></paper-autocomplete-suggestions>
+      <p></p>
+      <table>
+        <tr>
+          <th>Key</th>
+          <th>EN</th>
+          <th>FR</th>
+          <th>ZH</th>
+        </tr>
+        <tr>
+          <td>pdp-dth</td>
+          <td>Add to Cart</td>
+          <td>Ajouter au panier</td>
+          <td>添加到購物車</td>
+        </tr>
+      </table>
+      <p></p>
       <template is="dom-repeat" items="{{keys}}">
         <div>{{item}}</div>
       </template> 
