@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 --><link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-app.html">
+<link rel="import" href="../bower_components/paper-autocomplete/paper-autocomplete.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-view1">
@@ -28,12 +29,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <div class="card">
-      <paper-input id="nameInput" label="username" on-input="filter" value="{{term}}"></paper-input>
+      <paper-input id="nameInput" label="Search Keywords"></paper-input>
+      <paper-autocomplete-suggestions min-length="0" is-open="true" for="nameInput" source="[[keys]]"></paper-autocomplete-suggestions>
+      <p></p>
+      <table>
+        <tbody><tr>
+          <th>Key</th>
+          <th>EN</th>
+          <th>FR</th>
+          <th>ZH</th>
+        </tr>
+        <tr>
+          <td>pdp-dth</td>
+          <td>Add to Cart</td>
+          <td>Ajouter au panier</td>
+          <td>添加到購物車</td>
+        </tr>
+      </tbody></table>
+      <p></p>
       <template is="dom-repeat" items="{{keys}}">
         <div>{{item}}</div>
       </template> 
     </div>
-    <firebase-app id="app" api-key="{{config.apiKey}}" auth-domain="{{config.authDomain}}" database-url="{{config.databaseURL}}" storage-bucket="{{config.storageBucket}}" messaging-sender-id="{{config.messagingSenderId}}"></firebase-app>
+    <firebase-app id="app" api-key="{{config.apiKey}}" auth-domain="{{config.authDomain}}" database-url="{{config.databaseURL}}" storage-bucket="{{config.storageBucket}}" messaging-sender-id="{{config.messagingSenderId}}"></firebase-app> 
   </template>
 
   <script>
@@ -50,8 +68,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // Get data from 
           this.$.app.app.database().ref('/').on('value', function(data) {
               that.en = data.val().en;
+              that.fr = data.val().fr;
+              that.zh = data.val().zh;
               that.keys = Object.keys(that.en);
+              console.log(that.en);
           });
+
+          this.shadowRoot.querySelector('paper-autocomplete-suggestions').addEventListener('selected-option-changed', this.onHighlightedSuggestedChange.bind(this));
+      }
+
+      onHighlightedSuggestedChange(evt) {
+        console.log(this.en[evt.detail.value.text]);
+        console.log(this.fr[evt.detail.value.text]);
+        console.log(this.zh[evt.detail.value.text]);
       }
 
       filter() {

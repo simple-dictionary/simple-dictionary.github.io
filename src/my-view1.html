@@ -77,7 +77,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.$.app.app.database().ref('/').on('value', function(data) {
               that.en = data.val().en;
               that.fr = data.val().fr;
-              //that.zh = data.val().zh;
+              that.zh = data.val().zh;
               that.keys = Object.keys(that.en);
               console.log(that.en);
           });
@@ -88,7 +88,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       onHighlightedSuggestedChange(evt) {
         console.log(this.en[evt.detail.value.text]);
         console.log(this.fr[evt.detail.value.text]);
-        //console.log(this.zh[evt.detail.value.text]);
+        console.log(this.zh[evt.detail.value.text]);
       }
 
       filter() {
