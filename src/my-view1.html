@@ -12,12 +12,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-app.html">
 <link rel="import" href="../bower_components/paper-autocomplete/paper-autocomplete.html">
+
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-view1">
   <template>
     <style include="shared-styles">
-      :host {
+       :host {
         display: block;
 
         padding: 10px;
@@ -41,58 +42,57 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <th>FR</th>
           <th>ZH</th>
         </tr>
-        <tr>
-          <td>pdp-dth</td>
-          <td>Add to Cart</td>
-          <td>Ajouter au panier</td>
-          <td>添加到購物車</td>
-        </tr>
       </table>
       <p></p>
-      <template is="dom-repeat" items="{{keys}}">
-        <div>{{item}}</div>
-      </template> 
+      <template is="dom-repeat" items="{{keys}}" as="myitem">
+        <span>{{myitem.id}}</span> |  <span>{{myitem.en}}</span> | <span>{{myitem.fr}}</span> |  <span>{{myitem.zh}}</span> <br>
+      </template>
     </div>
-    <firebase-app
-        id="app"
-        api-key="{{config.apiKey}}"
-        auth-domain="{{config.authDomain}}"
-        database-url="{{config.databaseURL}}"
-        storage-bucket="{{config.storageBucket}}"
-        messaging-sender-id="{{config.messagingSenderId}}"></firebase-app> 
+    <firebase-app id="app" api-key="{{config.apiKey}}" auth-domain="{{config.authDomain}}" database-url="{{config.databaseURL}}"
+      storage-bucket="{{config.storageBucket}}" messaging-sender-id="{{config.messagingSenderId}}"></firebase-app>
   </template>
 
   <script>
     class MyView1 extends Polymer.Element {
-      static get is() { return 'my-view1'; }
+      static get is() {
+        return 'my-view1';
+      }
+
 
       connectedCallback() {
-          super.connectedCallback();
+        super.connectedCallback();
 
-          var that = this;
+        var that = this;
 
-          window.app = this.$.app.app.database();
+        // Get data from 
+        this.$.app.app.database().ref('/').on('value', function (data) {
+          that.keys = that.toArray(data.val().textlist);
+          console.log("that.keys", that.keys);
+        });
 
-          // Get data from 
-          this.$.app.app.database().ref('/').on('value', function(data) {
-              that.en = data.val().en;
-              that.fr = data.val().fr;
-              that.zh = data.val().zh;
-              that.keys = Object.keys(that.en);
-              console.log(that.en);
-          });
-
-          this.shadowRoot.querySelector('paper-autocomplete-suggestions').addEventListener('selected-option-changed', this.onHighlightedSuggestedChange.bind(this));
+        this.shadowRoot.querySelector('paper-autocomplete-suggestions').addEventListener('selected-option-changed',
+          this.onHighlightedSuggestedChange.bind(this));
       }
 
       onHighlightedSuggestedChange(evt) {
-        console.log(this.en[evt.detail.value.text]);
-        console.log(this.fr[evt.detail.value.text]);
-        console.log(this.zh[evt.detail.value.text]);
+        console.log(this.keys);
+        console.log(this.keys.en[evt.detail.value.text]);
+        console.log(this.keys.fr[evt.detail.value.text]);
+        console.log(this.keys.zh[evt.detail.value.text]);
       }
 
       filter() {
         console.log(`filtering with term: ${term}`);
+      }
+
+
+      toArray(obj) {
+        if (!obj) return [];
+        return Object.keys(obj).map(function (key) {
+          return Object.assign({}, {
+            id: key
+          }, obj[key]);;
+        });
       }
 
       static get properties() {
@@ -108,14 +108,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             notify: true,
           },
           config: {
-              type: Object,
-              notify: true,
-              value: {
-                  "apiKey": "AIzaSyB4GFCB9jZfwSpGz7wLJfveXm893HhuZM8",
-                  "authDomain": "dictionary-187c9.firebaseapp.com",
-                  "databaseURL": "https://dictionary-187c9.firebaseio.com",
-                  "storageBucket": "dictionary-187c9.appspot.com",
-              }
+            type: Object,
+            notify: true,
+            value: {
+              "apiKey": "AIzaSyB4GFCB9jZfwSpGz7wLJfveXm893HhuZM8",
+              "authDomain": "dictionary-187c9.firebaseapp.com",
+              "databaseURL": "https://dictionary-187c9.firebaseio.com",
+              "storageBucket": "dictionary-187c9.appspot.com",
+            }
           }
         }
       }
