@@ -42,13 +42,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       tr:nth-child(odd) {
         background: #FFF
       }
+      prism-table {
+        margin: 50px 0;
+      }
     </style>
 
     <div class="card">
       <paper-input id="nameInput" label="Search Keywords"></paper-input>
       <paper-autocomplete-suggestions min-length="0" is-open="true" for="nameInput" source="[[keys]]"></paper-autocomplete-suggestions>
-      <p></p>
 
+      
       <prism-table responsive striped>
           <prism-thead>
             <prism-tr>
