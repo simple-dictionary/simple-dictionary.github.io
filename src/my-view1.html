@@ -29,6 +29,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         height: auto;
         background-color: #000;
       }
+      table {
+        text-align: center;
+      }
+      tr:nth-child(even) {background: #CCC}
+tr:nth-child(odd) {background: #FFF}
+
     </style>
 
     <div class="card">
@@ -41,12 +47,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <th>EN</th>
           <th>FR</th>
           <th>ZH</th>
+</tr>
+          <template is="dom-repeat" items="{{keys}}" as="myitem">
+            <tr>
+              <td>{{myitem.id}} </td>
+              <td>{{myitem.en}}</td>
+              <td>{{myitem.fr}}</td>
+              <td>{{myitem.zh}}</td>
+            </tr>
+          </template>
         </tr>
       </table>
-      <p></p>
-      <template is="dom-repeat" items="{{keys}}" as="myitem">
-        <span>{{myitem.id}}</span> |  <span>{{myitem.en}}</span> | <span>{{myitem.fr}}</span> |  <span>{{myitem.zh}}</span> <br>
-      </template>
     </div>
     <firebase-app id="app" api-key="{{config.apiKey}}" auth-domain="{{config.authDomain}}" database-url="{{config.databaseURL}}"
       storage-bucket="{{config.storageBucket}}" messaging-sender-id="{{config.messagingSenderId}}"></firebase-app>
