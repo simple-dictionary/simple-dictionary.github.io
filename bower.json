@@ -17,7 +17,8 @@
     "polymer": "Polymer/polymer#^2.0.0-rc.3",
     "polymerfire": "firebase/polymerfire#^2.1.0",
     "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0-rc.7",
-    "paper-autocomplete": "ellipticaljs/paper-autocomplete#^3.0.0"
+    "paper-autocomplete": "ellipticaljs/paper-autocomplete#^3.0.0",
+    "prism-table": "Prhythm/prism-table#^2.0.0"
   },
   "resolutions": {
     "polymer": "^2.0.0-rc.3"
